@@ -12,7 +12,7 @@ RUN apt-get update \
 && apt-get -y install php7.2 php7.2-common php7.2-curl \
 && apt-get -y autoremove && apt-get -y autoclean && apt-get clean && rm -rf /var/lib/apt/lists /tmp/* /var/tmp/*
 
-COPY . /root
+COPY code/ /root
 
 ENTRYPOINT [ "/root/sms2_send.php" ]
 CMD [ ]
