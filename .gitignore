@@ -1,3 +1,4 @@
 composer.phar
-/vendor/
+/code/vendor/
 .idea/
+sms2_send.sh

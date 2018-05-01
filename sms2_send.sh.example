@@ -5,4 +5,8 @@
 CLIENT_ID=your_client_id
 CLIENT_SECRET=your_secret
 
+NUMBER="${1}"
+SUBJECT="${2}"
+BODY=$(/usr/local/bin/decode_if_required.php "${3}" | tr -d '\"')
+
 docker run -e CLIENT_ID=${CLIENT_ID} -e CLIENT_SECRET=${CLIENT_SECRET} singularo/telstra-sms2 "${NUMBER}" "${SUBJECT} - ${BODY}"
