@@ -1,0 +1,11 @@
+{
+  "repositories": [
+    {
+      "type": "git",
+      "url": "https://github.com/Telstra/MessagingAPI-SDK-php.git"
+    }
+  ],
+  "require": {
+    "Telstra/MessagingAPI-SDK-php": "*"
+  }
+}
