@@ -2,3 +2,4 @@ composer.phar
 /code/vendor/
 .idea/
 sms2_send.sh
+sms2_test.sh

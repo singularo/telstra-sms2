@@ -8,4 +8,4 @@
 * Call the script when you want to send an SMS
 
 ### Build the docker image locally
-docker build -t singularo/telstra-sms2 code/
+docker build -t singularo/telstra-sms2 .

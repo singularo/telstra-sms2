@@ -25,8 +25,9 @@ $sms_number = NULL;
 
 try {
     $result = $apiInstance->authToken($client_id, $client_secret, "client_credentials");
-} catch (Exception $e) {
-    echo 'Exception when calling AuthenticationApi->authToken: ', $e->getMessage(), PHP_EOL;
+}
+catch (Exception $e) {
+    echo "Exception when calling AuthenticationApi->authToken:\n", $e->getResponseBody(), PHP_EOL;
 }
 
 $config = Telstra_Messaging\Configuration::getDefaultConfiguration()->setAccessToken($result->getAccessToken());
@@ -39,29 +40,31 @@ $provisionApi = new ProvisioningApi(
 try {
     $result = $provisionApi->getSubscription();
     $sms_number = $result->getDestinationAddress();
-} catch (Exception $e) {
-    echo 'Exception when calling ProvisioningApi->getSubscription: ', $e->getMessage(), PHP_EOL;
+    $active_days = $result->getActiveDays();
+}
+catch (Exception $e) {
+    echo "Exception when calling ProvisioningApi->getSubscription:\n", $e->getResponseBody(), PHP_EOL;
 }
 
-if (!isset($sms_number)) {
+if (!isset($sms_number) || !isset($active_days) || $active_days <= 0) {
     $body = new ProvisionNumberRequest([
-        'active_days' => 1,
+        'active_days' => 365,
     ]);
 
     try {
         $result = $provisionApi->createSubscription($body);
-    } catch (Exception $e) {
-        echo 'Exception when calling ProvisioningApi->createSubscription: ', $e->getMessage(), PHP_EOL;
     }
-
-    // Allow a little time for the subscription to process.
-    sleep(10);
+    catch (Exception $e) {
+        echo "Exception when calling ProvisioningApi->createSubscription:\n", $e->getResponseBody(), PHP_EOL;
+    }
 
     try {
         $result = $provisionApi->getSubscription();
-        print_r($result);
-    } catch (Exception $e) {
-        echo 'Exception when calling ProvisioningApi->getSubscription: ', $e->getMessage(), PHP_EOL;
+        $sms_number = $result->getDestinationAddress();
+        $active_days = $result->getActiveDays();
+    }
+    catch (Exception $e) {
+        echo "Exception when calling ProvisioningApi->getSubscription:\n", $e->getResponseBody(), PHP_EOL;
     }
 }
 
@@ -79,5 +82,5 @@ try {
     $result = $msgApi->sendSMS($payload);
 }
 catch (Exception $e) {
-    echo 'Exception when calling MessagingApi->SendSMS: ', $e->getMessage(), PHP_EOL;
+    echo "Exception when calling MessagingApi->SendSMS:\n", $e->getResponseBody(), PHP_EOL;
 }
